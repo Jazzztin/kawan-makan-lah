@@ -1,0 +1,218 @@
+/* =========================================================================
+   Malaysia-themed order animation scene. Tropical grassy stall yard with a
+   dirt path, a courier that walks the order between stations, and cute
+   Malaysian animal NPCs. Pixel-crisp rendering, simple panel border.
+   Art: CC0 Ninja Adventure (Pixel-boy) + original animal sprites.
+   ========================================================================= */
+
+.scene {
+  --courier-floor: 46%;
+  position: relative;
+  height: 320px;
+  width: 100%;
+  overflow: hidden;
+  border: 3px solid #2b2435;
+  border-radius: 8px;
+  image-rendering: pixelated;
+  /* Cameron Highlands tea plantation — clean, low-detail Malaysian landscape
+     so the courier and animal sprites stand out clearly. */
+  background-color: #8fc3e8;
+  background-image: url("/assets/scene/bg-tea-plantation.jpg");
+  /* Preserve the artwork's ground levels and both side clearings on phones. */
+  background-size: 100% 100%;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  font-family: inherit;
+}
+
+.scene-ground { display: none; }
+.scene-sky { display: none; }
+
+/* kopitiam stall backdrop, centered behind the stations */
+.scene-stall {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 128px;
+  width: auto;
+  image-rendering: pixelated;
+  opacity: 0.96;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* station labels across the top */
+.scene-stations {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2px;
+  padding: 0 3px;
+  text-align: center;
+  font-size: clamp(10px, 2.5vw, 12px);
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 1.5px 1.5px 0 #1a1626, -1.5px 1.5px 0 #1a1626,
+    1.5px -1.5px 0 #1a1626, -1.5px -1.5px 0 #1a1626, 0 2px 3px rgba(0,0,0,0.5);
+  z-index: 4;
+}
+.scene-stations span {
+  background: rgba(26, 22, 38, 0.55);
+  padding: 4px 1px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.scene-stations span[aria-current="step"] {
+  color: #ffe1a0;
+  background: #2b2435;
+}
+
+/* ---- courier ---- */
+.courier {
+  position: absolute;
+  bottom: var(--courier-floor);
+  transform: translateX(-50%);
+  transition: left 1500ms steps(20, end);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+.courier-parcel {
+  font-size: 0.72rem;
+  font-family: Consolas, "SFMono-Regular", Menlo, monospace;
+  font-variant-numeric: tabular-nums slashed-zero;
+  font-weight: 800;
+  color: #2b2435;
+  background: #f0a830;
+  border: 2px solid #2b2435;
+  border-radius: 3px;
+  padding: 1px 4px;
+  margin-bottom: 2px;
+  text-shadow: none;
+}
+
+/* Four-frame transparent walk sheets, with front and side rows. */
+.char-sprite {
+  image-rendering: pixelated;
+  display: block;
+  background-repeat: no-repeat;
+  background-position-x: 0;
+  filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.35));
+}
+.char-sprite.idle {
+  background-position-x: calc(-1 * var(--frame-size));
+}
+.char-sprite.walking {
+  animation: char-walk 600ms steps(4) infinite;
+}
+/* Cycle actual leg poses; direction is set independently on the sprite. */
+@keyframes char-walk {
+  from { background-position-x: 0; }
+  to { background-position-x: calc(-4 * var(--frame-size)); }
+}
+
+/* Wildlife has a foreground lane between the courier and the dialogue. */
+.npc {
+  position: absolute;
+  image-rendering: pixelated;
+  z-index: 1;
+}
+.npc-tapir {
+  width: 48px;
+  bottom: 32%;
+  left: calc(20% - 24px);
+  animation: npc-bob 1.6s steps(2) infinite alternate;
+}
+.npc-hornbill {
+  width: 70px;
+  top: 85px;
+  right: 10px;
+  animation: npc-bob 1s steps(2) infinite alternate;
+}
+.npc-orangutan {
+  width: 45px;
+  bottom: 32%;
+  right: calc(20% - 22.5px);
+  animation: npc-bob 2s steps(2) infinite alternate;
+}
+@keyframes npc-bob {
+  from { transform: translateY(0); }
+  to { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .courier,
+  .char-sprite.idle,
+  .char-sprite.walking,
+  .npc,
+  .dialogue-box,
+  .dialogue-caret {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* =========================================================================
+   Retro dialogue box (original design) — overlaid INSIDE the scene at the
+   bottom. A reserved strip at the scene's base holds it, so showing/hiding
+   the message never moves any elements below the scene.
+   ========================================================================= */
+.dialogue-box {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #fffaf0;
+  border: 3px solid #1a1626;
+  border-radius: 8px;
+  box-shadow: 0 4px 0 #1a1626, inset 0 0 0 2px #c9a24a;
+  animation: dialogue-pop 180ms steps(3);
+}
+@keyframes dialogue-pop {
+  from { transform: translateY(8px) scale(0.96); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+.dialogue-portrait {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border: 3px solid #1a1626;
+  border-radius: 6px;
+  background-color: #cfe3f5;
+  /* default fallback; the actual courier face is set inline per order */
+  background-image: url(/assets/scene/courier-1-walk-face.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+  image-rendering: pixelated;
+}
+.dialogue-text {
+  margin: 0;
+  font-family: "Pixelify Sans", monospace;
+  font-size: clamp(12px, 3vw, 15px);
+  font-weight: 600;
+  color: #2b2435;
+  line-height: 1.35;
+}
+.dialogue-caret {
+  color: #3fb6c4;
+  animation: caret-blink 0.6s steps(1) infinite;
+}
+
+@media (max-width: 360px) {
+  .dialogue-box { gap: 8px; padding: 8px; }
+  .dialogue-portrait { width: 36px; height: 36px; }
+}
+@keyframes caret-blink {
+  50% { opacity: 0; }
+}

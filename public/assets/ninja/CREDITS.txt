@@ -1,0 +1,18 @@
+Art assets in this folder are from the "Ninja Adventure" asset pack
+by Pixel-boy (Sparklin Labs), released under the Creative Commons Zero
+(CC0) license — free for any use, including commercial, no attribution
+required. Credit is given here voluntarily as good practice.
+
+Source: https://github.com/pixel-boy/NinjaAdventure
+        https://pixel-boy.itch.io/ninja-adventure-asset-pack
+
+Files used:
+  samurai_blue.png, samurai_green.png, ninja_blue.png
+      - character sprite sheets (64x112, 16x16 frames, 4 dirs x walk cycle)
+  grass.png, dirt.png
+      - single floor tiles extracted from tileset_floor.png
+  tree.png
+      - a tree sprite extracted from tileset_village.png
+
+These are the artist's own original characters and scenery — not sprites
+from any commercial game.

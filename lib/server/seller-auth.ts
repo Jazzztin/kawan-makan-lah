@@ -1,13 +1,11 @@
 import { env } from "cloudflare:workers";
 import { getChatGPTUser, type ChatGPTUser } from "@/app/chatgpt-auth";
 import { ApiError } from "./http";
-
-const OWNER_ID = "fe2e6adc-2fa9-49cb-b745-fd0551e594e6";
-const OWNER_EMAIL = "seller@example.com";
+import { SELLER_EMAIL } from "./seller-config";
 
 export function isSeller(user: ChatGPTUser | null): boolean {
   if (!user) return false;
-  if (user.userId === OWNER_ID || user.email.toLowerCase() === OWNER_EMAIL) return true;
+  if (user.email.toLowerCase() === SELLER_EMAIL) return true;
   const extra = (env as typeof env & { SELLER_EMAILS?: string }).SELLER_EMAILS ?? "";
   if (extra.split(",").map((email) => email.trim().toLowerCase()).includes(user.email.toLowerCase())) return true;
   return process.env.NODE_ENV === "development" && user.email === "seedy@sites.test";

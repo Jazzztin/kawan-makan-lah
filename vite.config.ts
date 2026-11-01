@@ -61,6 +61,20 @@ export default defineConfig(async ({ command }) => {
         inspectorPort: false,
         config: {
           ...localBindingConfig,
+          vars:
+            command === "serve"
+              ? {
+                  ...(process.env.SELLER_PASSWORD
+                    ? { SELLER_PASSWORD: process.env.SELLER_PASSWORD }
+                    : {}),
+                  ...(process.env.SELLER_SESSION_SECRET
+                    ? {
+                        SELLER_SESSION_SECRET:
+                          process.env.SELLER_SESSION_SECRET,
+                      }
+                    : {}),
+                }
+              : {},
           ...(command === "serve"
             ? {
                 services: [

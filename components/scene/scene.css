@@ -27,6 +27,98 @@
 
 .scene-ground { display: none; }
 .scene-sky { display: none; }
+.scene-ready { box-shadow: inset 0 0 0 3px rgba(255, 225, 160, .7); }
+
+/* Status-specific environmental moments. */
+.received-effect,
+.preparing-effect,
+.ready-ding,
+.collected-stamp {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+}
+.received-effect {
+  left: 12.5%;
+  top: 35%;
+}
+.received-effect span {
+  display: block;
+  padding: 2px 5px;
+  border: 2px solid #2b2435;
+  border-radius: 3px;
+  background: #fffaf0;
+  color: #2b2435;
+  font: 800 11px/1 Consolas, monospace;
+  animation: ticket-arrival 1.25s steps(12, end) both;
+}
+@keyframes ticket-arrival {
+  0% { opacity: 0; transform: translate(-150px, -75px) rotate(-18deg) scale(.7); }
+  18% { opacity: 1; }
+  72% { opacity: 1; transform: translate(-8px, -8px) rotate(3deg) scale(1); }
+  100% { opacity: 0; transform: translate(0, 0) rotate(0) scale(.8); }
+}
+.preparing-effect {
+  left: 37.5%;
+  top: 37%;
+  width: 48px;
+  height: 66px;
+  transform: translateX(-50%);
+}
+.preparing-effect span {
+  position: absolute;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 250, 240, .9);
+  box-shadow: 0 0 0 2px rgba(43, 36, 53, .2);
+  animation: kitchen-steam 2.1s ease-out infinite;
+}
+.preparing-effect span:nth-child(1) { left: 4px; animation-delay: 0ms; }
+.preparing-effect span:nth-child(2) { left: 20px; animation-delay: 650ms; }
+.preparing-effect span:nth-child(3) { left: 35px; animation-delay: 1250ms; }
+@keyframes kitchen-steam {
+  0% { opacity: 0; transform: translate(0, 8px) scale(.6); }
+  25% { opacity: .95; }
+  100% { opacity: 0; transform: translate(7px, -52px) scale(1.65); }
+}
+.ready-ding {
+  left: 62.5%;
+  top: 43px;
+  transform: translateX(-50%) rotate(-5deg);
+  padding: 3px 7px;
+  border: 2px solid #2b2435;
+  border-radius: 4px;
+  background: #ffe1a0;
+  color: #2b2435;
+  font: 900 13px/1 "Pixelify Sans", monospace;
+  text-shadow: none;
+  animation: ready-ding-pop 900ms steps(5, end) both;
+}
+@keyframes ready-ding-pop {
+  0% { opacity: 0; transform: translateX(-50%) rotate(-18deg) scale(.2); }
+  35% { opacity: 1; transform: translateX(-50%) rotate(8deg) scale(1.25); }
+  65% { transform: translateX(-50%) rotate(-5deg) scale(.95); }
+  100% { opacity: 1; transform: translateX(-50%) rotate(-5deg) scale(1); }
+}
+.collected-stamp {
+  left: 50%;
+  top: 57px;
+  transform: translateX(-50%) rotate(-5deg);
+  padding: 5px 10px;
+  border: 3px double #8a2f32;
+  border-radius: 4px;
+  background: rgba(255, 250, 240, .88);
+  color: #8a2f32;
+  font: 900 15px/1 "Pixelify Sans", monospace;
+  letter-spacing: .04em;
+  animation: collected-stamp-in 520ms cubic-bezier(.2, 1.5, .4, 1) both;
+}
+@keyframes collected-stamp-in {
+  0% { opacity: 0; transform: translateX(-50%) rotate(-15deg) scale(2.2); }
+  100% { opacity: .92; transform: translateX(-50%) rotate(-5deg) scale(1); }
+}
 
 /* kopitiam stall backdrop, centered behind the stations */
 .scene-stall {
@@ -95,6 +187,59 @@
   margin-bottom: 2px;
   text-shadow: none;
 }
+.courier-order-preview {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  min-height: 26px;
+  margin-bottom: 2px;
+}
+.courier-order-item {
+  position: relative;
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin-left: -3px;
+  overflow: visible;
+  border: 2px solid #2b2435;
+  border-radius: 50%;
+  background: #fffaf0;
+  box-shadow: 0 2px 0 rgba(43, 36, 53, .55);
+}
+.courier-order-item:first-child { margin-left: 0; }
+.courier-order-item img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.courier-order-item b {
+  position: absolute;
+  right: -4px;
+  top: -3px;
+  display: grid;
+  place-items: center;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 2px;
+  border: 1px solid #2b2435;
+  border-radius: 8px;
+  background: #f0a830;
+  color: #2b2435;
+  font: 800 8px/1 Consolas, monospace;
+}
+.courier-order-more {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-left: -3px;
+  border: 2px solid #2b2435;
+  border-radius: 50%;
+  background: #fffaf0;
+  color: #2b2435;
+  font: 800 9px/1 Consolas, monospace;
+}
 
 /* Four-frame transparent walk sheets, with front and side rows. */
 .char-sprite {
@@ -119,8 +264,39 @@
 /* Wildlife has a foreground lane between the courier and the dialogue. */
 .npc {
   position: absolute;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  line-height: 0;
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   image-rendering: pixelated;
   z-index: 1;
+}
+.npc-sprite {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.28));
+  transition: transform 120ms steps(2), filter 120ms linear;
+}
+.npc:hover .npc-sprite,
+.npc:focus-visible .npc-sprite {
+  transform: scale(1.12);
+  filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.38));
+}
+.npc:active .npc-sprite { transform: scale(.94); }
+.npc:active:not(:disabled) { box-shadow: none; }
+.npc:focus-visible {
+  outline: 3px solid #ffe1a0;
+  outline-offset: 3px;
+  border-radius: 8px;
 }
 .npc-tapir {
   width: 48px;
@@ -145,16 +321,53 @@
   to { transform: translateY(-3px); }
 }
 
+/* One short burst when the order first enters the ready state. */
+.ready-celebration {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ready-celebration span {
+  position: absolute;
+  left: 62.5%;
+  top: 46%;
+  width: 7px;
+  height: 11px;
+  border: 1px solid rgba(43, 36, 53, .55);
+  background: var(--confetti-color);
+  opacity: 0;
+  animation: ready-confetti 1.35s cubic-bezier(.15, .7, .25, 1) var(--confetti-delay) both;
+  will-change: transform, opacity;
+}
+@keyframes ready-confetti {
+  0% { opacity: 0; transform: translate(-50%, 0) rotate(0deg) scale(.4); }
+  12% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--confetti-x), var(--confetti-y)) rotate(var(--confetti-rotation)) scale(1); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .courier,
   .char-sprite.idle,
   .char-sprite.walking,
   .npc,
+  .npc-sprite,
+  .received-effect,
+  .preparing-effect,
+  .ready-ding,
+  .collected-stamp,
   .dialogue-box,
   .dialogue-caret {
     animation: none !important;
     transition: none !important;
   }
+  .received-effect,
+  .preparing-effect,
+  .ready-ding { display: none; }
+  .collected-stamp { animation: none !important; }
+  .ready-celebration { display: none; }
 }
 
 /* =========================================================================

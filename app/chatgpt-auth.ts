@@ -1,11 +1,13 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { sellerEmailFromCookie } from "@/lib/server/seller-session";
 
 export type ChatGPTUser = {
   userId: string;
   displayName: string;
   email: string;
   fullName: string | null;
+  authProvider: "chatgpt" | "password";
 };
 
 const USER_ID_HEADER = "oai-authenticated-user-id";
@@ -22,7 +24,19 @@ export async function getChatGPTUser(): Promise<ChatGPTUser | null> {
   const requestHeaders = await headers();
   const userId = requestHeaders.get(USER_ID_HEADER);
   const email = requestHeaders.get(USER_EMAIL_HEADER);
-  if (!userId || !email) return null;
+  if (!userId || !email) {
+    const sellerEmail = await sellerEmailFromCookie(
+      requestHeaders.get("cookie"),
+    );
+    if (!sellerEmail) return null;
+    return {
+      userId: `password:${sellerEmail.toLowerCase()}`,
+      displayName: sellerEmail,
+      email: sellerEmail,
+      fullName: null,
+      authProvider: "password",
+    };
+  }
 
   const encodedFullName = requestHeaders.get(USER_FULL_NAME_HEADER);
   const fullName =
@@ -36,6 +50,7 @@ export async function getChatGPTUser(): Promise<ChatGPTUser | null> {
     displayName: fullName ?? email,
     email,
     fullName,
+    authProvider: "chatgpt",
   };
 }
 

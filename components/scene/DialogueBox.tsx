@@ -16,9 +16,11 @@ import "./scene.css";
 export default function DialogueBox({
   message,
   portrait,
+  portraitFit = "cover",
 }: {
   message: string;
   portrait?: string;
+  portraitFit?: "cover" | "contain";
 }) {
   const [typed, setTyped] = useState("");
   const [visible, setVisible] = useState(false);
@@ -53,7 +55,11 @@ export default function DialogueBox({
       <div
         className="dialogue-portrait"
         aria-hidden="true"
-        style={portrait ? { backgroundImage: `url(${portrait})` } : undefined}
+        style={portrait ? {
+          backgroundImage: `url(${portrait})`,
+          backgroundSize: portraitFit,
+          backgroundPosition: "center",
+        } : undefined}
       />
       <p className="dialogue-text">
         {typed}

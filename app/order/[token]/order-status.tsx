@@ -124,7 +124,7 @@ export default function OrderStatus({ token }: { token: string }) {
         </div>
         <section className="status-section" aria-labelledby="status-heading">
           <div className="status-section-head"><h1 id="status-heading">Order status</h1><span>Updates automatically</span></div>
-          <OrderScene key={order.token} status={order.status} orderNumber={order.number} />
+          <OrderScene key={order.token} status={order.status} orderNumber={order.number} items={order.lines} />
           <ol className="status-steps">{steps.map((step, index) => <li key={step.key} className={index < currentStep ? "is-done" : index === currentStep ? "is-current" : ""}>
             <span className="step-mark" aria-hidden="true">{index + 1}</span>
             <span>{step.label}</span>

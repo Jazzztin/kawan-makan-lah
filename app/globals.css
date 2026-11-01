@@ -84,11 +84,12 @@ input, textarea {
 .customer-page { min-height: 100dvh; padding-bottom: 116px; }
 .menu-shell { max-width: 1050px; margin: 16px auto; padding: 8px 16px 20px; background: var(--surface); border: 4px solid var(--frame); border-radius: 10px; box-shadow: 0 6px 0 var(--frame); }
 .menu-header { position: relative; text-align: center; padding: 20px 0 22px; }
-.brand-logo { display: block; margin: 0 auto 8px; image-rendering: pixelated; width: 220px; height: auto; }
-.status-header .brand-logo { width: 161.5px; margin: 0; }
+.brand-logo { display: block; margin: 0 auto 8px; image-rendering: pixelated; width: 141px; height: auto; }
+.status-header .brand-logo { width: 129px; margin: 0; }
 .menu-header h1 { margin: 0; font-size: clamp(27px, 7.2vw, 32px); letter-spacing: -.055em; line-height: 1.12; font-weight: 700; }
 .menu-header p { margin: 9px 0 0; color: var(--muted); font-size: 15px; }
-.last-order-link { display: inline-block; margin-top: 11px; color: var(--accent); font-size: 15px; text-underline-offset: 3px; }
+.last-order-link { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; margin-top: 14px; padding: 8px 14px; border: 2px solid var(--frame); border-radius: 999px; background: var(--accent-light); color: var(--ink); box-shadow: 0 3px 0 var(--frame); font-size: 17px; font-weight: 800; text-decoration: none; }
+.last-order-link:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--frame); }
 .menu-groups { display: grid; gap: 32px; }
 .menu-group { min-width: 0; }
 .group-heading { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 11px; border-bottom: 1px solid var(--line); }
@@ -195,7 +196,7 @@ input, textarea {
 /* Pickup status */
 .status-page { min-height: 100dvh; }
 .status-header { max-width: 650px; margin: 0 auto; padding: 18px; display: flex; align-items: center; justify-content: center; gap: 12px; text-align: center; }
-.status-brand { flex: 0 1 161.5px; min-width: 0; max-width: 42%; }
+.status-brand { flex: 0 1 129px; min-width: 0; max-width: 42%; transform: translateX(30px); }
 .status-stall { position: relative; flex: 0 1 250px; min-width: 0; aspect-ratio: 1.6; image-rendering: pixelated; }
 .status-stall-counter { position: absolute; left: 0; bottom: 14%; width: 100%; height: 86%; object-fit: contain; }
 .status-stall-person { position: absolute; bottom: 0; height: 48%; width: auto; max-width: 28%; object-fit: contain; }
@@ -346,6 +347,13 @@ input, textarea {
 .seller-gate h1 { margin: 35px 0 10px; font-size: 25px; }
 .seller-gate p { color: var(--muted); line-height: 1.5; }
 .gate-button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 13px; padding: 0 16px; border-radius: 6px; background: var(--accent); color: var(--button-ink); text-decoration: none; font-weight: 600; }
+.seller-login-form { display: grid; gap: 9px; margin-top: 22px; }
+.seller-login-form label { font-size: 13px; font-weight: 650; }
+.seller-login-form input { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); font: inherit; }
+.seller-login-form input:focus { outline: 2px solid color-mix(in srgb, var(--accent) 60%, transparent); outline-offset: 1px; }
+.seller-login-form .gate-button { width: 100%; border: 0; cursor: pointer; }
+.seller-login-form .gate-button:disabled { cursor: wait; opacity: .65; }
+.seller-login-error { margin: 2px 0 0; color: #a32929 !important; font-size: 13px; }
 
 @media (max-width: 1170px) {
   .seller-columns { grid-template-columns: minmax(0, 1fr) 295px; }

@@ -156,7 +156,7 @@ export default function MenuClient() {
         <header className="menu-header">
           <h1 className="menu-brand"><img className="brand-logo" src="/assets/scene/logo.png" alt="Kawan, Makan Lah!" /></h1>
           <p>Pick your food. Pay at the stall.</p>
-          {lastOrder && <a className="last-order-link" href={`/order/${encodeURIComponent(lastOrder.token)}`}>Track order #{lastOrder.number}</a>}
+          {lastOrder && <a className="last-order-link" href={`/order/${encodeURIComponent(lastOrder.token)}`}><span aria-hidden="true">📍</span> Track order #{lastOrder.number}</a>}
         </header>
 
         {menu?.paused && <div className="menu-notice" role="status">Orders are paused right now. You can still browse the menu.</div>}
